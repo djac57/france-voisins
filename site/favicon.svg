@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Pastille centrale rouge (la France) entourée de pastilles grises (ses voisins) -->
+  <rect width="64" height="64" rx="12" fill="#0d0f12"/>
+  <circle cx="18" cy="18" r="7" fill="#a3a8b0"/>
+  <circle cx="46" cy="18" r="7" fill="#a3a8b0"/>
+  <circle cx="18" cy="46" r="7" fill="#a3a8b0"/>
+  <circle cx="46" cy="46" r="7" fill="#a3a8b0"/>
+  <circle cx="32" cy="32" r="11" fill="#e4002b"/>
+</svg>

@@ -1,0 +1,214 @@
+[
+  {
+    "id": "dual", "domain": "edu", "indicator": "youth_unemp",
+    "country": ["DE", "CH"], "year": "système ancien, renforcé depuis 2005 (DE) et 2004 (CH)",
+    "title": "L'apprentissage « dual » allemand et suisse",
+    "law": "Une majorité de jeunes suivent une formation professionnelle alternant entreprise (3 à 4 jours par semaine, contrat et salaire d'apprenti) et école professionnelle, sur 2 à 4 ans. Les contenus sont définis avec les branches et les chambres consulaires, et les diplômes sont reconnus nationalement.",
+    "effects": "Le chômage des jeunes reste durablement bas en Allemagne et en Suisse (moins de 10 % selon l'IZA, contre plus de 35 % en Italie). Une étude de l'IW (2004) attribue à ce système environ 5 points de chômage des jeunes en moins dans la comparaison OCDE.",
+    "limits": "Le lien causal est discuté : une analyse comparative de 2023 (IHS Vienne) juge que la baisse directe du chômage des jeunes par l'apprentissage n'est pas corroborée par les données. Le système suppose un tissu d'entreprises formatrices et une orientation précoce, critiquée pour figer les parcours.",
+    "france": "La France a fortement développé l'apprentissage depuis la loi « Avenir professionnel » de 2018 (aides à l'embauche), surtout dans le supérieur. Son chômage des 15-24 ans reste au-dessus de la médiane du panel.",
+    "sources": [
+      {"label": "Eurofound — l'étude IW sur la formation professionnelle et le chômage des jeunes", "url": "https://www.eurofound.europa.eu/en/publications/all/vocational-training-reduces-youth-unemployment-iw-study-finds"},
+      {"label": "Lassnigg (2023), IHS — Sustaining dual apprenticeship systems", "url": "https://irihs.ihs.ac.at/id/eprint/6619/"},
+      {"label": "IZA World of Labor — Does vocational training help young people find a (good) job?", "url": "https://wol.iza.org/articles/does-vocational-training-help-young-people-find-good-job/long"}
+    ]
+  },
+  {
+    "id": "phonics", "domain": "edu", "indicator": "pisa_read",
+    "country": ["UK"], "year": "2012",
+    "title": "Angleterre : méthode syllabique systématique et « phonics check »",
+    "law": "Depuis 2010, l'enseignement de la lecture en Angleterre repose sur la méthode syllabique systématique (synthetic phonics). Depuis 2012, tous les élèves de 6 ans passent un test national de décodage (Phonics Screening Check), repassé l'année suivante en cas d'échec.",
+    "effects": "L'Angleterre est 4e sur 43 pays au PIRLS 2021 (lecture à 10 ans) ; les scores au test de décodage sont corrélés positivement aux scores PIRLS.",
+    "limits": "L'Education Policy Institute (2024) ne trouve pas d'effet propre et mesurable du test sur le niveau de lecture, et une thèse (Patmore, 2022) relève que les gains annoncés ne se retrouvent pas dans les évaluations de fin de primaire. La comparaison 2016-2021 est brouillée par la crise du Covid.",
+    "france": "La France recommande aussi une approche syllabique depuis 2018 et a instauré des évaluations nationales en CP et CE1. Ses scores PISA de compréhension de l'écrit ont reculé entre 2012 et 2022.",
+    "sources": [
+      {"label": "DfE — PIRLS 2021, rapport national pour l'Angleterre (mai 2023)", "url": "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1156633/PIRLS_2021_-_national_report_for_England__May_2023.pdf"},
+      {"label": "Education Policy Institute (2024) — impact national du phonics screening check", "url": "https://epi.org.uk/publications-and-research/what-can-quantitative-analyses-tell-us-about-the-national-impact-of-the-phonics-screening-check/"},
+      {"label": "Gouvernement britannique — l'Angleterre 4e au classement international en lecture", "url": "https://www.gov.uk/government/news/england-moves-to-fourth-in-international-rankings-for-reading"}
+    ]
+  },
+  {
+    "id": "kurzarbeit", "domain": "eco", "indicator": "unemployment",
+    "country": ["DE"], "year": "généralisé en 2008-2009",
+    "title": "Allemagne : le chômage partiel (Kurzarbeit) dans la crise de 2008",
+    "law": "En cas de baisse d'activité, l'employeur réduit le temps de travail au lieu de licencier, et l'assurance chômage compense une partie du salaire perdu. Le dispositif allemand décourage les réductions à 100 % des heures et fait contribuer les entreprises qui y recourent.",
+    "effects": "Pendant la Grande Récession, 2,5 à 5 % des salariés allemands ont été placés en chômage partiel, et l'emploi a très peu reculé malgré une forte chute du PIB. Les données d'entreprise allemandes indiquent des effets d'aubaine plutôt modérés.",
+    "limits": "Selon Boeri et Brücker (2011), les emplois réellement sauvés sont moins nombreux que les équivalents temps plein couverts. Prolongé trop longtemps, le dispositif peut maintenir des emplois dans des secteurs en déclin.",
+    "france": "La France a largement utilisé son « activité partielle » pendant le Covid (2020-2021), sur un modèle proche. Son taux de chômage reste supérieur à la médiane du panel.",
+    "sources": [
+      {"label": "Boeri & Brücker (2011), IZA DP 5635 — Short-time work benefits revisited", "url": "https://www.iza.org/publications/dp/5635/short-time-work-benefits-revisited-some-lessons-from-the-great-recession"}
+    ]
+  },
+  {
+    "id": "flexicurity", "domain": "eco", "indicator": "employment",
+    "country": ["DK"], "year": "réformes 1994-1996, système plus ancien",
+    "title": "Danemark : la « flexisécurité »",
+    "law": "Le modèle danois combine trois piliers : des règles de licenciement souples, une indemnisation du chômage élevée mais conditionnée, et des politiques actives d'emploi très développées (formation, accompagnement, obligation de participer). Les réformes des années 1990 ont raccourci la durée d'indemnisation et renforcé les obligations d'activation.",
+    "effects": "Le Danemark consacre aux politiques actives d'emploi la plus forte dépense de l'OCDE et affiche un taux d'emploi élevé. Ses programmes sont évalués en continu, notamment par des expérimentations aléatoires.",
+    "limits": "Kreiner et Svarer (2022) soulignent que la souplesse et l'indemnisation ne suffisent pas sans une activation obligatoire et coûteuse. Plusieurs économistes jugent le modèle lié à une histoire de confiance entre partenaires sociaux et difficilement exportable, et plus exposé aux chocs.",
+    "france": "La France a introduit des éléments de souplesse (rupture conventionnelle en 2008, ordonnances de 2017) et réformé l'assurance chômage. Son taux d'emploi des 20-64 ans est proche de la médiane du panel, et celui des seniors en dessous.",
+    "sources": [
+      {"label": "Kreiner & Svarer (2022), Journal of Economic Perspectives — Danish flexicurity", "url": "https://www.aeaweb.org/doi/10.1257/jep.36.4.81"},
+      {"label": "FMI (2016) — Denmark, Selected Issues", "url": "https://www.imf.org/en/publications/cr/issues/2016/12/31/denmark-selected-issues-19931"}
+    ]
+  },
+  {
+    "id": "debtbrake", "domain": "eco", "indicator": "debt",
+    "country": ["CH"], "year": "2003",
+    "title": "Suisse : le frein à l'endettement",
+    "law": "Inscrit dans la Constitution après un référendum (85 % de « oui » en 2001), le frein à l'endettement plafonne les dépenses de la Confédération au niveau des recettes, corrigées de la conjoncture. Un déficit est permis en récession, mais il doit être compensé ensuite.",
+    "effects": "Une étude par contrôle synthétique (Pfeil et Feld, 2016) estime que la règle a amélioré le solde budgétaire fédéral d'environ 3,6 points en moyenne sur cinq ans. La dette fédérale est passée de 27,2 % du PIB en 2005 à 19 % fin 2012, selon l'administration fédérale.",
+    "limits": "Une partie de la baisse vient de crédits budgétés puis non dépensés, ce qui est critiqué. La règle ne couvre que la Confédération, pas les cantons, et peut freiner l'investissement public.",
+    "france": "La France n'a pas de règle d'équilibre contraignante : elle est soumise aux règles budgétaires européennes et au contrôle du Haut Conseil des finances publiques. Sa dette publique est parmi les plus élevées du panel.",
+    "sources": [
+      {"label": "Pfeil & Feld (2016), CESifo — Does the Swiss debt brake induce sound federal finances?", "url": "https://cesifo.org/en/publications/2016/working-paper/does-swiss-debt-brake-induce-sound-federal-finances-synthetic"},
+      {"label": "Rapport d'experts sur le frein à l'endettement (2017)", "url": "https://lenews.ch/wp-content/uploads/2023/07/Schuldenbremse_2017_e_web.pdf"},
+      {"label": "Tille (2017) — critique du rapport d'experts", "url": "https://blogs.letemps.ch/cedric-tille/2017/08/30/swiss-debt-brake-an-expert-report-that-is-too-timid/"}
+    ]
+  },
+  {
+    "id": "carbontax", "domain": "eco2", "indicator": "ghg_pc",
+    "country": ["SE"], "year": "1991",
+    "title": "Suède : la taxe carbone",
+    "law": "La Suède taxe les combustibles fossiles selon leur contenu en CO₂ depuis 1991, à environ 30 $ la tonne au départ puis plus de 130 $ aujourd'hui. Le produit a été compensé en partie par des baisses d'autres impôts.",
+    "effects": "D'après Andersson (2019, American Economic Journal), les émissions des transports ont baissé de près de 11 % par rapport à un groupe de pays comparables, la majeure partie de l'effet venant de la taxe carbone.",
+    "limits": "L'effet est mesuré surtout dans les transports, et sa significativité statistique est modeste. Les secteurs exposés à la concurrence internationale ont longtemps bénéficié d'exonérations. Le contexte suédois (électricité déjà décarbonée, forte acceptation) facilite la mesure.",
+    "france": "La France a créé une composante carbone en 2014, gelée à 44,6 € la tonne en 2018 après le mouvement des Gilets jaunes. Ses émissions par habitant sont dans la moitié basse du panel, grâce à son électricité nucléaire.",
+    "sources": [
+      {"label": "Andersson (2019), AEJ: Economic Policy — Carbon taxes and CO2 emissions: Sweden as a case study", "url": "https://www.aeaweb.org/doi/10.1257/pol.20170144"},
+      {"label": "Andersson, document de travail (version 2017)", "url": "https://www.cccep.ac.uk/wp-content/uploads/2017/03/Working-paper-212-Andersson_update_March2017.pdf"}
+    ]
+  },
+  {
+    "id": "ndc", "domain": "social", "indicator": "emp_senior",
+    "country": ["SE"], "year": "loi de 1994, en vigueur à partir de 1999",
+    "title": "Suède : la retraite en comptes notionnels",
+    "law": "Chaque assuré accumule ses cotisations sur un compte individuel, revalorisé comme les salaires, et sa pension est calculée selon l'espérance de vie de sa génération à son départ. Il n'y a pas d'âge légal fixe, seulement une fourchette. Un « frein » automatique réduit les revalorisations si le système devient déficitaire.",
+    "effects": "L'équilibre financier est garanti par construction, sans réforme paramétrique récurrente. Le système incite à travailler plus longtemps, et le taux d'emploi des 55-64 ans est parmi les plus élevés d'Europe.",
+    "limits": "La stabilité financière est obtenue au détriment du niveau des pensions. Le frein automatique a baissé les pensions après la crise de 2008, et Barr et Diamond plaident pour l'améliorer. Le niveau projeté dépend aussi de fonds tampons importants.",
+    "france": "Le projet français de retraite universelle à points a été abandonné en 2020 ; la réforme de 2023 a relevé l'âge légal à 64 ans. Le taux d'emploi des 55-64 ans français reste nettement sous la médiane du panel.",
+    "sources": [
+      {"label": "Brookings — Building automatic solvency into U.S. Social Security: insights from Sweden and Germany", "url": "https://www.brookings.edu/articles/building-automatic-solvency-into-u-s-social-security-insights-from-sweden-and-germany/"},
+      {"label": "Barr & Diamond (2011), CRR Boston College — Improving Sweden's automatic pension adjustment mechanism", "url": "https://crr.bc.edu/wp-content/uploads/2011/01/IB_11-2-508.pdf"}
+    ]
+  },
+  {
+    "id": "nurses", "domain": "sante", "indicator": "doctors",
+    "country": ["UK", "NL"], "year": "depuis les années 1990-2000",
+    "title": "Royaume-Uni, Pays-Bas : les infirmières en pratique avancée dans les soins primaires",
+    "law": "Des infirmières formées au niveau master assurent des consultations, le suivi des maladies chroniques et, dans certains pays, des prescriptions. Elles travaillent en équipe avec les généralistes. Le Royaume-Uni a une longue expérience de ce partage des tâches, et les Pays-Bas ont ouvert un droit de prescription aux infirmières depuis 2010.",
+    "effects": "Selon l'OCDE (Delamaire et Lafortune, 2010), les évaluations montrent que ces infirmières peuvent améliorer l'accès aux soins et réduire les délais d'attente, avec une qualité au moins équivalente pour les patients suivis.",
+    "limits": "Les économies sont incertaines : les consultations sont parfois plus longues et plus nombreuses. La mise en place dépend de la formation, de la rémunération et de l'acceptation par les médecins.",
+    "france": "La France a créé le statut d'infirmier en pratique avancée en 2018 et élargi l'accès direct en 2023, avec encore peu de praticiens. Elle compte moins de médecins par habitant que la plupart de ses voisins.",
+    "sources": [
+      {"label": "OCDE (2010), Health Working Paper n° 54 — Nurses in advanced roles", "url": "https://www.oecd-ilibrary.org/social-issues-migration-health/nurses-in-advanced-roles_5kmbrcfms5g7-en"},
+      {"label": "OCDE (2024), Health Working Paper n° 165 — Nurses in advanced roles in primary care", "url": "https://www.oecd.org/en/publications/nurses-in-advanced-roles-in-primary-care_a8756593-en.html"}
+    ]
+  },
+  {
+    "id": "sugarlevy", "domain": "sante", "indicator": "avoidable",
+    "country": ["UK"], "year": "2018",
+    "title": "Royaume-Uni : la taxe sur les sodas par paliers de sucre",
+    "law": "Depuis avril 2018, les fabricants paient 18 pence par litre pour les boissons contenant de 5 à 8 g de sucre pour 100 ml, et 24 pence au-delà. La taxe vise la reformulation par l'industrie plus que le prix payé par le consommateur.",
+    "effects": "Les fabricants ont massivement réduit le sucre de leurs recettes avant même l'entrée en vigueur. Rogers et al. (PLoS Medicine, 2023) mesurent une baisse relative de 8 % de l'obésité chez les filles de 10-11 ans, surtout dans les quartiers défavorisés. La consommation de sucre a baissé d'environ 5 g par jour chez les enfants et 11 g chez les adultes.",
+    "limits": "Les études ne trouvent pas d'effet sur l'obésité des garçons. Les effets sur la santé à long terme ne sont pas encore mesurables, et la taxe ne porte que sur les boissons.",
+    "france": "La France taxe les boissons sucrées depuis 2012 ; le barème est progressif selon le sucre depuis 2018, et il a été relevé en 2025.",
+    "sources": [
+      {"label": "Rogers et al. (2023), PLoS Medicine — taxe sur les sodas et obésité des enfants", "url": "https://doaj.org/article/9b066e05f4004ebfa8bf756351ae4e11"},
+      {"label": "LSHTM — commentaire d'expert sur la baisse de la consommation de sucre", "url": "https://www.lshtm.ac.uk/newsevents/news/2024/expert-comment-sugar-tax-soft-drinks-shown-reduce-sugar-intake"}
+    ]
+  },
+  {
+    "id": "pfand", "domain": "eco2", "indicator": "recycling",
+    "country": ["DE"], "year": "2003",
+    "title": "Allemagne : la consigne des bouteilles et canettes",
+    "law": "Une consigne obligatoire de 25 centimes s'applique aux bouteilles plastique et aux canettes à usage unique, remboursée en magasin, souvent par automate. Son champ a été étendu à la plupart des boissons en 2022.",
+    "effects": "Selon l'opérateur du système, Deutsche Pfandsystem, 98 % des emballages consignés sont rapportés, ce qui donne une matière triée de bonne qualité pour le recyclage.",
+    "limits": "Le taux de 98 % est déclaré par l'opérateur, sans évaluation indépendante trouvée. Le système porte sur une petite part des déchets ménagers et suppose des automates dans les commerces.",
+    "france": "La France n'a pas généralisé la consigne des bouteilles plastique : le projet a été écarté en 2023 au profit de la collecte sélective. Son taux de recyclage des déchets municipaux est parmi les plus bas du panel.",
+    "sources": [
+      {"label": "Vending Times — extension de la consigne allemande", "url": "https://www.vendingtimes.com/news/germanys-deposit-return-expands-to-alcohol-and-milk-based-beverages/"},
+      {"label": "Dickinson College — Universal Recycling Refunds (Pfand)", "url": "https://blogs.dickinson.edu/german-environments/?p=281"}
+    ]
+  },
+  {
+    "id": "payt", "domain": "eco2", "indicator": "recycling",
+    "country": ["BE"], "year": "années 1990, tarifs encadrés depuis 2012",
+    "title": "Flandre (Belgique) : la tarification incitative des déchets",
+    "law": "Les ménages flamands paient leurs ordures résiduelles au sac ou au poids, dans une fourchette de prix régionale. Le prix minimum garde l'intérêt de trier, le prix maximum évite les dépôts sauvages chez les voisins. Les taxes sur la mise en décharge et l'incinération complètent le dispositif.",
+    "effects": "Les déchets ont baissé de 30 % dans les dix ans suivant l'introduction. En 2012, la Flandre ne produisait que 117 kg d'ordures résiduelles par habitant et par an, et la mise en décharge des déchets ménagers est tombée à environ 1 %.",
+    "limits": "Une grande partie des déchets non recyclés est incinérée, ce qui est contesté. Les chiffres disponibles sont anciens, et il existe un risque de dépôts sauvages.",
+    "france": "La loi de transition énergétique de 2015 vise 25 millions d'habitants couverts par une tarification incitative en 2025, un objectif loin d'être atteint.",
+    "sources": [
+      {"label": "ACR+ / OVAM — fiche de bonne pratique sur la tarification incitative", "url": "https://acrplus.org/media/origin/images/project/R4R/Good_Practices/GP_OVAM_PAYT.pdf"},
+      {"label": "Interreg Europe — taxes sur la mise en décharge en Flandre", "url": "https://interregeurope.eu/good-practices/waste-deposit-and-landfill-tax-system-of-flanders"}
+    ]
+  },
+  {
+    "id": "vienna", "domain": "logement", "indicator": "overburden",
+    "country": ["AT"], "outside": true, "year": "depuis 1920, modèle actuel depuis les années 1980",
+    "title": "Vienne (Autriche, hors panel) : un logement social pour une large part de la population",
+    "law": "La ville possède environ 220 000 logements municipaux (Gemeindebau) et subventionne la construction par des sociétés à but lucratif limité. Les plafonds de revenus sont élevés, et les ressources ne sont pas revérifiées une fois le logement attribué. Une loi d'urbanisme réserve deux tiers des nouveaux terrains constructibles au logement subventionné.",
+    "effects": "Près d'un quart des Viennois vivent en logement municipal, et plus de la moitié si l'on compte les coopératives subventionnées. Les loyers y sont plafonnés, autour de 7,50 € le m² dans le parc municipal.",
+    "limits": "Le système coûte cher et repose sur un patrimoine accumulé pendant un siècle. Les attributions sont lentes, et la pression des investisseurs sur le parc privé est croissante. Les chiffres disponibles mêlent plusieurs définitions et viennent souvent de la presse.",
+    "france": "Le parc HLM représente entre 10 et 19 % des logements en France (OCDE). Les plafonds de revenus y sont plus bas et ciblent davantage les ménages modestes.",
+    "sources": [
+      {"label": "Monocle — Vienna Gemeindebau public housing", "url": "https://monocle.com/business/property/vienna-gemeindebau-public-housing/"},
+      {"label": "Housing Base — Vienna, still affordable but also in need of reforms (2020)", "url": "https://housing-base.journalismarena.eu/city-housing-profiles/vienna-still-affordable-but-also-in-need-of-reforms-sept-2020"},
+      {"label": "OCDE — indicateur PH4.2 Social rental housing stock", "url": "https://www.oecd.org/content/dam/oecd/en/data/datasets/affordable-housing-database/ph4-2-social-rental-housing-stock.pdf"}
+    ]
+  },
+  {
+    "id": "woningcorp", "domain": "logement", "indicator": "overburden",
+    "country": ["NL"], "year": "loi sur le logement de 2015",
+    "title": "Pays-Bas : les sociétés de logement (woningcorporaties)",
+    "law": "Des associations privées à but non lucratif possèdent environ 29 % du parc, soit près de 2,3 millions de logements. La loi de 2015 les recentre sur le logement abordable, avec des plafonds de revenus et un contrôle renforcé après des scandales de gestion.",
+    "effects": "Un logement abordable est disponible à grande échelle. Dans les grandes villes, leur part est encore plus forte : 46 % des logements d'Amsterdam en 2015. L'évaluation officielle de la loi conclut que ses objectifs principaux sont atteints.",
+    "limits": "Les files d'attente sont très longues, plus de 7 ans en moyenne dans les grandes villes et jusqu'à 19 ans dans certaines communes. La construction neuve a ralenti, et une taxe sur les bailleurs a pesé sur leurs moyens.",
+    "france": "La France a aussi un secteur HLM géré par des bailleurs sociaux, mais plus petit en proportion. Elle a une demande en attente importante, environ 2,7 millions de demandeurs.",
+    "sources": [
+      {"label": "Volkshuisvesting Nederland — évaluation de la loi sur le logement", "url": "https://www.volkshuisvestingnederland.nl/onderwerpen/evaluatie-woningwet/evaluatie-woningwet-in-het-kort"},
+      {"label": "Housing Europe — fiche Pays-Bas", "url": "https://www.housingeurope.eu/wp-content/uploads/2026/06/netherlands.pdf"},
+      {"label": "NL Times — attente de plus de 7 ans pour un logement social", "url": "https://nltimes.nl/node/69471"}
+    ]
+  },
+  {
+    "id": "housingfirst", "domain": "logement", "indicator": "housing_depriv",
+    "country": ["DK"], "year": "2009-2013",
+    "title": "Danemark : la stratégie « Housing First » contre le sans-abrisme",
+    "law": "Plutôt que de faire passer les personnes sans abri par des étapes d'hébergement, la stratégie nationale les relogeait directement dans un logement ordinaire. Un accompagnement intensif et mobile (ACT, ICM ou CTI) suivait ces personnes chez elles. Plus de 1 000 personnes ont été relogées.",
+    "effects": "Environ 9 personnes sur 10 sont restées dans leur logement avec l'accompagnement adapté.",
+    "limits": "La couverture est restée faible : dans les communes participantes, une personne sans abri sur vingt seulement a été incluse, et 11 % des usagers chroniques des centres d'hébergement. Le manque de logements abordables freine le passage à l'échelle. Le sans-abrisme n'est pas mesuré de façon comparable entre pays.",
+    "france": "La France mène le plan « Logement d'abord » depuis 2018, avec des programmes « Un chez-soi d'abord » inspirés du même principe.",
+    "sources": [
+      {"label": "Benjaminsen (2018), Social Inclusion — Housing First in Denmark", "url": "https://www.cogitatiopress.com/socialinclusion/article/view/1539/1539"},
+      {"label": "FEANTSA — Denmark, Housing First", "url": "https://www.feantsa.org/download/denmark_final5689981689653846960.pdf"}
+    ]
+  },
+  {
+    "id": "mietpreisbremse", "domain": "logement", "indicator": "overburden",
+    "country": ["DE"], "year": "2015",
+    "title": "Allemagne : le frein aux loyers (Mietpreisbremse)",
+    "law": "Dans les zones tendues désignées par les Länder, le loyer d'une nouvelle location ne peut dépasser de plus de 10 % le loyer de référence local. Les logements neufs et entièrement rénovés en sont exclus.",
+    "effects": "Les effets sont débattus. Le DIW a d'abord conclu en 2016 que le frein ne ralentissait pas sensiblement les loyers, puis en 2018 qu'il freine la hausse là où les loyers progressaient déjà de plus de 3,9 % par an.",
+    "limits": "Ce n'est pas une solution à la pénurie de logements, selon le DIW lui-même. Le dispositif est souvent contourné, et ses effets sur la construction font l'objet d'études en cours.",
+    "france": "La France encadre les loyers à Paris depuis 2019, puis dans d'autres villes, à titre expérimental (loi ELAN), avec un loyer de référence majoré de 20 % au plus.",
+    "sources": [
+      {"label": "DIW Wochenbericht 7/2018 — Mietpreisbremse ist besser als ihr Ruf", "url": "https://www.diw.de/de/diw_01.c.578099.de/publikationen/wochenberichte/2018_07_1/mietpreisbremse_ist_besser_als_ihr_ruf__aber_nicht_die_loesung_des_wohnungsmarktproblems.html"},
+      {"label": "DIW Wochenbericht 22/2016 — Die Mietpreisbremse wirkt bisher nicht", "url": "https://www.diw.de/de/diw_01.c.535255.de/publikationen/wochenberichte/2016_22_1/die_mietpreisbremse_wirkt_bisher_nicht.html"}
+    ]
+  },
+  {
+    "id": "landtax", "domain": "fisc", "indicator": "tax_burden",
+    "country": ["DK"], "year": "XIXᵉ siècle, réformée en 2024",
+    "title": "Danemark : un impôt foncier sur la valeur du terrain (grundskyld)",
+    "law": "Une part de l'impôt foncier danois porte sur la seule valeur du terrain, indépendamment de ce qui est construit dessus, en complément d'un impôt sur la valeur des logements. En théorie, taxer le terrain plutôt que le bâti n'incite pas à moins construire.",
+    "effects": "Høj, Jørgensen et Schou (2018) trouvent que la taxe est entièrement intégrée dans les prix des terrains. Elle est donc peu coûteuse pour l'efficacité économique et neutre pour la construction.",
+    "limits": "Une étude de 2024 (Nielsson, Wroblewski et Yding) ne trouve au contraire aucun effet sur les prix et juge la taxe plus régressive que prévu. Le dispositif suppose des évaluations foncières à jour, une réforme lourde et contestée au Danemark.",
+    "france": "La taxe foncière française porte sur le bâti et le non-bâti, sur des valeurs cadastrales datant de 1970. La révision des valeurs locatives des logements est repoussée depuis des années.",
+    "sources": [
+      {"label": "Høj, Jørgensen & Schou (2018), Fiscal Studies — Land tax changes and full capitalisation", "url": "https://ideas.repec.org/a/wly/fistud/v39y2018i2p365-380.html"},
+      {"label": "Synthèse de Nielsson, Wroblewski & Yding (2024) — The incidence and efficiency of land value taxation", "url": "https://www.progress.org/wiki/nielsson-wroblewski-yding-danish-lvt/"}
+    ]
+  }
+]

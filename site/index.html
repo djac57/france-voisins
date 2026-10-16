@@ -1,0 +1,577 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>La France face à ses voisins</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="data.js?v=1c3d072358"></script>
+<script src="geo.js"></script>
+<style>
+:root {
+  color-scheme: light;
+  --bg: #fbfbf8; --paper: #ffffff; --ink: #0d0f12; --ink-2: #4a4f57; --muted: #8a9099; --rule: #e3e4e0; --rule-2: #cfd1cc;
+  --soft: #f2f2ee; --peer: #a3a8b0; --peer-2: #c9ccd1; --eu: #2c3036;
+  --fr: #e4002b; --fr-soft: #ffe3e8; --good: #0b8a54; --bad: #c2410c;
+  --edu: #2b59ff; --eco: #0891b2; --sante: #db2777; --social: #d97706; --fisc: #7c3aed; --eco2: #16a34a; --logement: #ea580c;
+  --map-0: #eef0f3; --map-1: #b9c3d6; --map-2: #7b8fb6; --map-3: #3f5a92; --map-4: #12295e;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #0d1014; --paper: #151a20; --ink: #f2f4f6; --ink-2: #b6bcc5; --muted: #7e8590; --rule: #262c34; --rule-2: #353d47;
+    --soft: #1b2129; --peer: #6c7480; --peer-2: #3f4651; --eu: #d7dbe0; --fr: #ff3b5c; --fr-soft: #3a1820; --good: #34d399; --bad: #fb923c;
+    --edu: #6b8aff; --eco: #22b8d4; --sante: #f0619f; --social: #f2a43a; --fisc: #a78bfa; --eco2: #3ccb70; --logement: #fb7a3c;
+    --map-0: #1d232b; --map-1: #2f4469; --map-2: #4a68a6; --map-3: #7b9be0; --map-4: #c5d4ff;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0d1014; --paper: #151a20; --ink: #f2f4f6; --ink-2: #b6bcc5; --muted: #7e8590; --rule: #262c34; --rule-2: #353d47;
+  --soft: #1b2129; --peer: #6c7480; --peer-2: #3f4651; --eu: #d7dbe0; --fr: #ff3b5c; --fr-soft: #3a1820; --good: #34d399; --bad: #fb923c;
+  --edu: #6b8aff; --eco: #22b8d4; --sante: #f0619f; --social: #f2a43a; --fisc: #a78bfa; --eco2: #3ccb70; --logement: #fb7a3c;
+  --map-0: #1d232b; --map-1: #2f4469; --map-2: #4a68a6; --map-3: #7b9be0; --map-4: #c5d4ff;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 "Instrument Sans", system-ui, sans-serif; font-variant-numeric: tabular-nums; }
+a { color: inherit; }
+.wrap { max-width: 1280px; margin: 0 auto; padding: 0 28px; }
+.display { font-family: Archivo, "Instrument Sans", sans-serif; font-stretch: 112%; letter-spacing: -.02em; }
+.cond { font-family: Archivo, sans-serif; font-stretch: 75%; text-transform: uppercase; letter-spacing: .06em; }
+button { font: inherit; color: inherit; }
+
+/* En-tête : bandeau d'atlas */
+header.top { border-bottom: 3px solid var(--ink); }
+.masthead { display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: end; padding: 30px 0 22px; }
+.kicker { font-size: 12px; font-weight: 700; color: var(--ink-2); }
+.kicker b { color: var(--fr); }
+h1 { margin: 6px 0 0; font-size: clamp(38px, 6.4vw, 84px); line-height: .92; font-weight: 850; }
+h1 em { font-style: normal; color: var(--fr); }
+.question { margin: 14px 0 0; font-size: clamp(17px, 2vw, 22px); font-weight: 600; color: var(--ink-2); max-width: 760px; }
+.lede { margin: 10px 0 0; max-width: 760px; color: var(--ink-2); }
+.source-line { margin: 12px 0 0; font-size: 12.5px; color: var(--muted); }
+.theme-btn { width: 42px; height: 42px; border: 2px solid var(--ink); background: var(--paper); cursor: pointer; display: grid; place-items: center; }
+.domains-band { display: grid; grid-template-columns: repeat(7, 1fr); }
+.domains-band span { height: 8px; }
+
+/* Filtres */
+.filters { position: sticky; top: 0; z-index: 30; background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--rule-2); }
+.filters .wrap { display: flex; flex-wrap: wrap; gap: 8px 22px; align-items: center; padding-top: 10px; padding-bottom: 10px; }
+.fg { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.fl { font-size: 11px; color: var(--muted); }
+.tab { border: 1.5px solid var(--rule-2); background: var(--paper); padding: 4px 10px; cursor: pointer; font-size: 13px; font-weight: 600; display: inline-flex; gap: 6px; align-items: center; }
+.tab[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.tab .dot { width: 9px; height: 9px; }
+.ctry { border: 1.5px solid var(--rule-2); background: var(--paper); padding: 3px 7px 3px 4px; cursor: pointer; display: inline-flex; gap: 5px; align-items: center; font-size: 12.5px; font-weight: 600; }
+.ctry[aria-pressed="false"] { opacity: .38; }
+.ctry.fr { border-color: var(--fr); cursor: default; }
+select { font: inherit; font-size: 13px; color: var(--ink); background: var(--paper); border: 1.5px solid var(--rule-2); padding: 4px 8px; }
+
+/* Sections */
+section.block { padding: 44px 0 10px; }
+.sec-head { display: grid; grid-template-columns: 80px 1fr; gap: 0 18px; align-items: start; border-top: 1px solid var(--ink); padding-top: 14px; margin-bottom: 20px; }
+.sec-num { font-family: Archivo, sans-serif; font-stretch: 125%; font-weight: 900; font-size: 46px; line-height: .9; }
+.sec-head h2 { margin: 0; font-size: clamp(24px, 3vw, 34px); font-weight: 800; line-height: 1.05; }
+.sec-head p { margin: 6px 0 0; color: var(--ink-2); max-width: 820px; }
+
+/* Bulletin : tuiles de domaine */
+.tiles { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 0; border: 1.5px solid var(--ink); }
+.tile { padding: 14px 14px 12px; border-right: 1px solid var(--rule-2); background: var(--paper); cursor: pointer; min-width: 0; position: relative; }
+.tile:last-child { border-right: none; }
+.tile:hover { background: var(--soft); }
+.tile .bar { position: absolute; top: 0; left: 0; right: 0; height: 6px; }
+.tile .dn { font-size: 12px; margin-top: 4px; }
+.tile .sc { font-family: Archivo, sans-serif; font-stretch: 112%; font-weight: 850; font-size: 40px; line-height: 1; margin-top: 8px; }
+.tile .sc small { font-size: 14px; font-weight: 600; color: var(--muted); font-stretch: 100%; }
+.tile .rk { font-size: 12.5px; color: var(--ink-2); margin-top: 4px; }
+.tile .verdict { font-size: 12px; font-weight: 700; margin-top: 8px; }
+.tile svg { display: block; margin-top: 8px; }
+.tile[aria-pressed="true"] { outline: 3px solid var(--ink); outline-offset: -3px; }
+
+/* Tableau des indicateurs */
+.tablewrap { overflow-x: auto; margin-top: 22px; }
+.tablewrap .itable { margin-top: 0; }
+.itable { width: 100%; border-collapse: collapse; margin-top: 22px; }
+.itable th { text-align: left; font-family: Archivo, sans-serif; font-stretch: 75%; text-transform: uppercase; letter-spacing: .06em; font-size: 11.5px; color: var(--muted); font-weight: 700; padding: 8px 8px; border-bottom: 1.5px solid var(--ink); white-space: nowrap; }
+.itable td { padding: 9px 8px; border-bottom: 1px solid var(--rule); vertical-align: middle; }
+.itable tr.row { cursor: pointer; }
+.itable tr.row:hover td { background: var(--soft); }
+.itable tr.row.sel td { background: var(--fr-soft); }
+.itable .lab { font-weight: 600; }
+.itable .lab small { display: block; font-weight: 400; color: var(--muted); font-size: 12px; }
+.itable .num { text-align: right; white-space: nowrap; }
+.itable .frv { font-weight: 800; color: var(--fr); }
+.chip { display: inline-block; padding: 1px 7px; font-size: 11.5px; font-weight: 700; white-space: nowrap; }
+.chip.good { background: color-mix(in srgb, var(--good) 15%, transparent); color: var(--good); }
+.chip.bad { background: color-mix(in srgb, var(--bad) 15%, transparent); color: var(--bad); }
+.chip.ctx { background: var(--soft); color: var(--muted); }
+.dstripe { width: 6px; padding: 0 !important; }
+.dgroup td { padding: 16px 8px 6px; border-bottom: 1.5px solid var(--ink); font-family: Archivo, sans-serif; font-stretch: 112%; font-weight: 800; font-size: 17px; }
+
+/* Détail */
+.detail { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 0; border: 1.5px solid var(--ink); background: var(--paper); }
+.detail > div { padding: 18px; min-width: 0; }
+.detail > div + div { border-left: 1px solid var(--rule-2); }
+.detail h3 { margin: 0; font-size: 20px; font-weight: 800; }
+.detail .meta { font-size: 12.5px; color: var(--muted); margin-top: 4px; }
+.detail .note { font-size: 13px; color: var(--ink-2); margin-top: 10px; }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12px; color: var(--ink-2); margin-top: 8px; }
+.legend i { display: inline-block; width: 16px; height: 3px; vertical-align: middle; margin-right: 5px; }
+.picker { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 14px; }
+
+/* Carte + heatmap */
+.duo { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 0; border: 1.5px solid var(--ink); background: var(--paper); }
+.duo > div { padding: 18px; min-width: 0; }
+.duo > div + div { border-left: 1px solid var(--rule-2); }
+.scale { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); margin-top: 6px; }
+.scale .grad { width: 180px; height: 10px; }
+
+/* Politiques */
+.pgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 0; border-top: 1.5px solid var(--ink); border-left: 1.5px solid var(--ink); }
+.pcard { border-right: 1.5px solid var(--ink); border-bottom: 1.5px solid var(--ink); background: var(--paper); padding: 0; display: flex; flex-direction: column; }
+.pcard .ph { padding: 14px 16px 12px; border-bottom: 1px solid var(--rule-2); position: relative; }
+.pcard .ph .bar { position: absolute; left: 0; top: 0; bottom: 0; width: 6px; }
+.pcard .who { display: flex; gap: 6px; align-items: center; font-size: 12.5px; font-weight: 700; color: var(--ink-2); flex-wrap: wrap; }
+.pcard h3 { margin: 6px 0 0; font-size: 18px; line-height: 1.2; font-weight: 800; }
+.pcard .pb { padding: 12px 16px 14px; font-size: 13.5px; color: var(--ink-2); display: grid; gap: 10px; }
+.pcard .pb h4 { margin: 0 0 2px; font-size: 11px; color: var(--ink); }
+.pcard .pb p { margin: 0; }
+.pcard .src { font-size: 12px; }
+.pcard .src a { color: var(--ink-2); text-underline-offset: 2px; }
+.pcard .goto { align-self: flex-start; border: 1.5px solid var(--ink); background: transparent; padding: 3px 9px; font-size: 12px; font-weight: 700; cursor: pointer; }
+.pcard .goto:hover { background: var(--ink); color: var(--bg); }
+.outside { font-size: 11px; font-weight: 700; color: var(--bad); border: 1px solid currentColor; padding: 0 5px; }
+.sh-table { margin-top: 18px; border: 1.5px solid var(--ink); background: var(--paper); padding: 14px 16px; font-size: 13.5px; }
+.sh-table h4 { margin: 0 0 8px; font-size: 15px; }
+.sh-row { display: grid; grid-template-columns: 150px 1fr; gap: 8px; padding: 4px 0; border-bottom: 1px solid var(--rule); align-items: center; }
+
+.flag { display: inline-block; vertical-align: middle; flex: none; border: 1px solid var(--rule-2); }
+.tip { position: fixed; pointer-events: none; z-index: 100; background: var(--paper); border: 1.5px solid var(--ink); padding: 9px 11px; font-size: 12.5px; min-width: 150px; max-width: 280px; opacity: 0; transition: opacity .1s; box-shadow: 4px 4px 0 var(--ink); }
+.tip .t { font-weight: 700; margin-bottom: 4px; }
+.tip .big { font-family: Archivo, sans-serif; font-weight: 850; font-size: 20px; }
+.tip .r { display: flex; justify-content: space-between; gap: 10px; }
+.tip .r span { color: var(--ink-2); display: flex; gap: 6px; align-items: center; }
+.tip .k { width: 12px; height: 3px; display: inline-block; }
+svg text { fill: var(--ink-2); }
+.axis text { fill: var(--muted); font-size: 11px; }
+.axis line, .axis path { stroke: var(--rule); }
+.axis .domain { display: none; }
+footer { margin-top: 50px; border-top: 3px solid var(--ink); padding: 18px 0 50px; font-size: 12.5px; color: var(--ink-2); }
+footer p { max-width: 980px; }
+
+@media (max-width: 1050px) {
+  .tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .tile { border-bottom: 1px solid var(--rule-2); }
+  .detail, .duo { grid-template-columns: 1fr; }
+  .detail > div + div, .duo > div + div { border-left: none; border-top: 1px solid var(--rule-2); }
+}
+@media (max-width: 640px) {
+  .wrap { padding: 0 16px; }
+  .masthead { grid-template-columns: 1fr; }
+  .theme-btn { position: absolute; top: 14px; right: 16px; }
+  header.top { position: relative; }
+  .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sec-head { grid-template-columns: 1fr; }
+  .sec-num { font-size: 34px; margin-bottom: 6px; }
+  .itable .hide-m { display: none; }
+  .itable td, .itable th { padding-left: 5px; padding-right: 5px; }
+  .itable .lab { min-width: 140px; }
+  .pgrid { grid-template-columns: 1fr; }
+  .filters { position: static; }
+  .sh-row { grid-template-columns: 110px 1fr; }
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="masthead">
+      <div>
+        <div class="kicker cond">Atlas comparatif · <b>France</b> et dix pays voisins ou pairs · <span id="period"></span></div>
+        <h1 class="display">La <em>France</em><br>face à ses voisins</h1>
+        <p class="question">Fait-on mieux que nos pairs ? Et quelles politiques menées chez eux pourraient inspirer ?</p>
+        <p class="lede">Éducation, économie, santé, social, fiscalité, écologie et logement : 35 indicateurs officiels comparent la France à l'Allemagne, la Belgique, le Luxembourg, la Suisse, l'Italie, l'Espagne, le Royaume-Uni, les Pays-Bas, la Suède, le Danemark et la moyenne de l'Union européenne.</p>
+        <p class="source-line">Sources : Eurostat, OCDE (PISA), Banque mondiale, FMI, Ember / Our World in Data — données récupérées le <span id="gen"></span>. Site indépendant.</p>
+      </div>
+      <button class="theme-btn" id="theme" aria-label="Changer de thème" title="Changer de thème">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="domains-band" id="band"></div>
+</header>
+
+<div class="filters" role="toolbar" aria-label="Filtres">
+  <div class="wrap">
+    <div class="fg"><span class="fl cond">Domaine</span><span id="domTabs" class="fg"></span></div>
+    <div class="fg"><span class="fl cond">Pays comparés</span><span id="ctryTabs" class="fg"></span></div>
+    <div class="fg"><span class="fl cond">Année</span><select id="year" aria-label="Année"></select></div>
+  </div>
+</div>
+
+<main class="wrap">
+  <section class="block" id="bulletin">
+    <div class="sec-head"><div class="sec-num">01</div><div><h2 class="display">Le bulletin de la France</h2>
+      <p>Pour chaque domaine, la place de la France parmi les pays cochés. Le score de domaine va de 0 (dernier du panel sur tous les indicateurs) à 100 (premier partout). C'est la moyenne simple des classements, indicateur par indicateur, sans pondération. Cliquez une ligne pour l'explorer.</p></div></div>
+    <div class="tiles" id="tiles"></div>
+    <div class="tablewrap"><table class="itable" id="itable" aria-label="Indicateurs"></table></div>
+  </section>
+
+  <section class="block" id="detail-sec">
+    <div class="sec-head"><div class="sec-num">02</div><div><h2 class="display">Un indicateur à la loupe</h2>
+      <p>Le classement pour l'année choisie, et l'évolution sur une vingtaine d'années. La France est en rouge, la moyenne de l'UE en pointillés.</p></div></div>
+    <div class="picker"><span class="fl cond">Indicateur</span><select id="indSel" aria-label="Indicateur"></select></div>
+    <div class="detail">
+      <div><h3 id="dTitle"></h3><div class="meta" id="dMeta"></div><div id="bars"></div><div class="note" id="dNote"></div></div>
+      <div><div id="lines"></div><div class="legend"><span><i style="background:var(--fr);height:4px"></i>France</span><span><i style="background:var(--eu);height:2px;background:repeating-linear-gradient(90deg,var(--eu) 0 5px,transparent 5px 8px)"></i>Moyenne UE</span><span><i style="background:var(--peer)"></i>Autres pays (survol pour les distinguer)</span></div></div>
+    </div>
+  </section>
+
+  <section class="block" id="map-sec">
+    <div class="sec-head"><div class="sec-num">03</div><div><h2 class="display">La carte et le classement d'ensemble</h2>
+      <p>À gauche, l'indicateur choisi sur la carte : plus la teinte est foncée, mieux le pays se classe (pour un repère de contexte, plus la valeur est élevée). À droite, les scores de chaque pays domaine par domaine.</p></div></div>
+    <div class="duo">
+      <div><div class="meta" id="mTitle" style="font-weight:700;color:var(--ink)"></div><div id="map"></div><div class="scale" id="mScale"></div></div>
+      <div><div id="heat"></div><div class="meta" style="margin-top:8px">Score 0–100 par domaine. Les cases vides signalent un pays mesuré sur moins de 60 % des indicateurs du domaine.</div></div>
+    </div>
+  </section>
+
+  <section class="block" id="policies">
+    <div class="sec-head"><div class="sec-num">04</div><div><h2 class="display">Et si on faisait comme eux ?</h2>
+      <p>Seize politiques publiques menées dans des pays pairs, chacune liée à un indicateur où la France est en retrait ou dans la moyenne. Pour chacune : ce que dit la loi, ce que montrent les évaluations, leurs limites, et la situation française. Ces fiches viennent de traditions politiques variées. Ce sont des pistes documentées, pas des recommandations : les effets observés ailleurs dépendent du contexte.</p></div></div>
+    <div class="pgrid" id="pgrid"></div>
+    <div class="sh-table" id="shTable"></div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><b>Méthode.</b> Une source unique par indicateur pour tous les pays, interrogée par API (codes indiqués sous chaque indicateur). Pour l'année choisie, chaque pays prend sa valeur la plus récente datant de cinq ans au plus. Le sens « mieux » de chaque indicateur est affiché. Les repères de contexte (dépense d'éducation, dépense de santé, propriétaires, prix des logements…) sont classés mais n'entrent pas dans les scores, car « plus » n'y est pas « mieux ». Le sens retenu pour la fiscalité (une pression plus légère est mieux classée) est un choix discutable, signalé comme tel. Le Royaume-Uni n'est plus couvert par Eurostat après 2019-2020, et la Suisse ne l'est que partiellement : des trous sont donc possibles, et indiqués.</p>
+    <p><b>Sources.</b> Eurostat (API de diffusion JSON-stat) ; Banque mondiale (API v2 ; OIT, OMS) ; FMI (DataMapper, Perspectives de l'économie mondiale) ; OCDE, Résultats du PISA 2022 ; Ember via Our World in Data (CC BY 4.0) ; OCDE, Affordable Housing Database. Les sources des fiches de politiques publiques sont citées sur chaque fiche (consultées le 16 octobre 2026). Fond de carte : Natural Earth via world-atlas (domaine public). Drapeaux redessinés en SVG simplifié.</p>
+  </div>
+</footer>
+<div class="tip" id="tip" role="tooltip"></div>
+
+<script>
+const D = window.DATA, GEO = window.GEO;
+const CN = Object.fromEntries(D.countries.map(c => [c.id, c.name])); CN.AT = "Autriche";
+const PEERS = D.countries.map(c => c.id).filter(c => c !== "EU");
+const DOM = Object.fromEntries(D.domains.map(d => [d.id, d.name]));
+const dcol = d => `var(--${d})`;
+const IND = Object.fromEntries(D.indicators.map(i => [i.id, i]));
+const YEARS = [...new Set(D.indicators.flatMap(i => Object.values(i.series).flatMap(s => s.map(p => p[0]))))].sort();
+const MAXY = d3.max(D.indicators, i => i.latestYear);
+const state = { domain: "all", peers: new Set(PEERS), year: "latest", ind: "unemployment" };
+
+const el = (t, c, txt) => { const e = document.createElement(t); if (c) e.className = c; if (txt != null) e.textContent = txt; return e; };
+const fmt = (v, i) => v == null ? "—" : (Math.abs(v) >= 1000 ? d3.format(",.0f")(v).replace(/,/g, " ") : v.toLocaleString("fr-FR", { maximumFractionDigits: Math.abs(v) < 10 ? 1 : 1 }));
+
+/* ---------- Drapeaux (SVG simplifiés) ---------- */
+function flag(c, w = 18) {
+  const h = Math.round(w * 2 / 3), ns = "http://www.w3.org/2000/svg";
+  const s = document.createElementNS(ns, "svg"); s.setAttribute("width", w); s.setAttribute("height", h); s.setAttribute("viewBox", "0 0 30 20"); s.setAttribute("class", "flag"); s.setAttribute("aria-hidden", "true");
+  const r = (x, y, ww, hh, f) => { const e = document.createElementNS(ns, "rect"); e.setAttribute("x", x); e.setAttribute("y", y); e.setAttribute("width", ww); e.setAttribute("height", hh); e.setAttribute("fill", f); s.append(e); };
+  const V = cols => cols.forEach((f, i) => r(i * 10, 0, 10, 20, f)), H = cols => cols.forEach((f, i) => r(0, i * 20 / cols.length, 30, 20 / cols.length, f));
+  ({
+    FR: () => V(["#0055a4", "#fff", "#ef4135"]), BE: () => V(["#111", "#fdda24", "#ef3340"]), IT: () => V(["#009246", "#fff", "#ce2b37"]),
+    DE: () => H(["#111", "#dd0000", "#ffce00"]), NL: () => H(["#ae1c28", "#fff", "#21468b"]), LU: () => H(["#ed2939", "#fff", "#00a1de"]), AT: () => H(["#ed2939", "#fff", "#ed2939"]),
+    ES: () => { r(0, 0, 30, 20, "#aa151b"); r(0, 5, 30, 10, "#f1bf00"); },
+    CH: () => { r(0, 0, 30, 20, "#d52b1e"); r(13, 4, 4, 12, "#fff"); r(9, 8, 12, 4, "#fff"); },
+    SE: () => { r(0, 0, 30, 20, "#006aa7"); r(9, 0, 4, 20, "#fecc00"); r(0, 8, 30, 4, "#fecc00"); },
+    DK: () => { r(0, 0, 30, 20, "#c8102e"); r(9, 0, 3, 20, "#fff"); r(0, 8.5, 30, 3, "#fff"); },
+    UK: () => { r(0, 0, 30, 20, "#012169"); const l = (x1, y1, x2, y2, c, sw) => { const e = document.createElementNS(ns, "line"); Object.entries({ x1, y1, x2, y2, stroke: c, "stroke-width": sw }).forEach(([k, v]) => e.setAttribute(k, v)); s.append(e); };
+      l(0, 0, 30, 20, "#fff", 4); l(30, 0, 0, 20, "#fff", 4); l(0, 0, 30, 20, "#c8102e", 1.4); l(30, 0, 0, 20, "#c8102e", 1.4); r(12, 0, 6, 20, "#fff"); r(0, 7, 30, 6, "#fff"); r(13.2, 0, 3.6, 20, "#c8102e"); r(0, 8.2, 30, 3.6, "#c8102e"); },
+    EU: () => { r(0, 0, 30, 20, "#003399"); for (let k = 0; k < 12; k++) { const a = k / 12 * Math.PI * 2, e = document.createElementNS(ns, "circle"); e.setAttribute("cx", 15 + 6 * Math.sin(a)); e.setAttribute("cy", 10 - 6 * Math.cos(a)); e.setAttribute("r", 1); e.setAttribute("fill", "#ffcc00"); s.append(e); } },
+  }[c] || (() => r(0, 0, 30, 20, "#999")))();
+  return s;
+}
+
+/* ---------- Valeurs pour l'année choisie ---------- */
+function valueAt(ind, c, year) {
+  const s = ind.series[c]; if (!s) return null;
+  const Y = year === "latest" ? ind.latestYear : +year;
+  let best = null; for (const [y, v] of s) if (y <= Y && y >= Y - 5) best = [y, v];
+  return best;
+}
+function ranking(ind) {
+  const vals = {};
+  for (const c of [...state.peers, "EU"]) { const v = valueAt(ind, c, state.year); if (v) vals[c] = v; }
+  const ranked = [...state.peers].filter(c => vals[c]).sort((a, b) => (vals[b][1] - vals[a][1]) * (ind.better || 1));
+  const n = ranked.length, rank = {}, score = {};
+  ranked.forEach((c, i) => { rank[c] = i + 1; if (ind.better && n > 1) score[c] = 100 * (n - 1 - i) / (n - 1); });
+  const pv = ranked.map(c => vals[c][1]).sort(d3.ascending);
+  return { vals, ranked, n, rank, score, median: pv.length ? d3.median(pv) : null };
+}
+function trend(ind) { // France : valeur de l'année choisie vs ~10 ans avant
+  const now = valueAt(ind, "FR", state.year); if (!now) return null;
+  const s = ind.series.FR; let past = null;
+  for (const [y, v] of s) if (Math.abs(y - (now[0] - 10)) <= 2 && (!past || Math.abs(y - (now[0] - 10)) < Math.abs(past[0] - (now[0] - 10)))) past = [y, v];
+  return past ? { from: past, to: now, delta: now[1] - past[1] } : null;
+}
+function domainScores() {
+  const out = {};
+  for (const d of D.domains) {
+    const inds = D.indicators.filter(i => i.domain === d.id && i.better);
+    const acc = {};
+    inds.forEach(i => { const r = ranking(i); Object.entries(r.score).forEach(([c, s]) => (acc[c] = acc[c] || []).push(s)); });
+    out[d.id] = Object.fromEntries(Object.entries(acc).filter(([, v]) => v.length >= .6 * inds.length).map(([c, v]) => [c, d3.mean(v)]));
+  }
+  return out;
+}
+
+/* ---------- Tooltip ---------- */
+const tip = document.getElementById("tip");
+function showTip(e, build) { tip.replaceChildren(); build(tip); tip.style.opacity = 1; moveTip(e); }
+function moveTip(e) { const r = tip.getBoundingClientRect(); let x = e.clientX + 14, y = e.clientY + 14; if (x + r.width > innerWidth - 8) x = e.clientX - r.width - 14; if (y + r.height > innerHeight - 8) y = e.clientY - r.height - 14; tip.style.left = Math.max(6, x) + "px"; tip.style.top = Math.max(6, y) + "px"; }
+const hideTip = () => tip.style.opacity = 0;
+
+/* ---------- En-tête et filtres ---------- */
+document.getElementById("gen").textContent = new Date(D.generated).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
+document.getElementById("period").textContent = `2005–${MAXY}`;
+const band = document.getElementById("band"); D.domains.forEach(d => { const s = el("span"); s.style.background = dcol(d.id); band.append(s); });
+const domTabs = document.getElementById("domTabs");
+[["all", "Tous"], ...D.domains.map(d => [d.id, d.name])].forEach(([id, name]) => {
+  const b = el("button", "tab"); if (id !== "all") { const dot = el("span", "dot"); dot.style.background = dcol(id); b.append(dot); }
+  b.append(document.createTextNode(name)); b.dataset.id = id; b.setAttribute("aria-pressed", id === state.domain);
+  b.onclick = () => { state.domain = id; domTabs.querySelectorAll(".tab").forEach(x => x.setAttribute("aria-pressed", x.dataset.id === id));
+    if (id !== "all" && IND[state.ind].domain !== id) state.ind = D.indicators.find(i => i.domain === id && i.better)?.id || state.ind; render(); };
+  domTabs.append(b);
+});
+const ctryTabs = document.getElementById("ctryTabs");
+PEERS.forEach(c => {
+  const b = el("button", "ctry" + (c === "FR" ? " fr" : "")); b.append(flag(c, 16), document.createTextNode(c)); b.title = CN[c];
+  b.setAttribute("aria-pressed", true);
+  b.onclick = () => { if (c === "FR") return; if (state.peers.has(c)) { if (state.peers.size > 3) state.peers.delete(c); } else state.peers.add(c); b.setAttribute("aria-pressed", state.peers.has(c)); render(); };
+  ctryTabs.append(b);
+});
+const yearSel = document.getElementById("year");
+yearSel.add(new Option("Dernière disponible", "latest")); [...YEARS].reverse().filter(y => y >= 2008).forEach(y => yearSel.add(new Option(y, y)));
+yearSel.onchange = () => { state.year = yearSel.value; render(); };
+const indSel = document.getElementById("indSel");
+D.domains.forEach(d => { const g = document.createElement("optgroup"); g.label = d.name; D.indicators.filter(i => i.domain === d.id).forEach(i => g.append(new Option(i.label, i.id))); indSel.append(g); });
+indSel.onchange = () => { state.ind = indSel.value; renderDetail(); renderMap(); markRow(); };
+
+/* ---------- 01 Bulletin ---------- */
+function renderTiles(ds) {
+  const host = document.getElementById("tiles"); host.replaceChildren();
+  D.domains.forEach(d => {
+    const sc = ds[d.id], fr = sc.FR, order = Object.keys(sc).filter(c => c !== "EU").sort((a, b) => sc[b] - sc[a]);
+    const t = el("div", "tile"); t.setAttribute("role", "button"); t.tabIndex = 0; t.setAttribute("aria-pressed", state.domain === d.id);
+    const bar = el("div", "bar"); bar.style.background = dcol(d.id); t.append(bar);
+    t.append(el("div", "dn cond", d.name));
+    const s = el("div", "sc"); s.textContent = fr == null ? "—" : Math.round(fr); s.append(el("small", null, " /100")); t.append(s);
+    t.append(el("div", "rk", fr == null ? "France non classée" : `${order.indexOf("FR") + 1}ᵉ sur ${order.length}`));
+    const med = d3.median(order.map(c => sc[c]));
+    const v = el("div", "verdict", fr == null ? "" : fr >= med ? "▲ au-dessus de la médiane" : "▼ sous la médiane"); v.style.color = fr >= med ? "var(--good)" : "var(--bad)"; t.append(v);
+    // mini bande : tous les pays
+    const W = 150, ns = "http://www.w3.org/2000/svg", svg = document.createElementNS(ns, "svg"); svg.setAttribute("width", "100%"); svg.setAttribute("height", 22); svg.setAttribute("viewBox", `0 0 ${W} 22`); svg.setAttribute("preserveAspectRatio", "none");
+    const line = document.createElementNS(ns, "rect"); line.setAttribute("x", 0); line.setAttribute("y", 10); line.setAttribute("width", W); line.setAttribute("height", 2); line.setAttribute("fill", "var(--rule-2)"); svg.append(line);
+    order.forEach(c => { const m = document.createElementNS(ns, "rect"); const x = sc[c] / 100 * (W - 4); m.setAttribute("x", x); m.setAttribute("y", c === "FR" ? 2 : 6); m.setAttribute("width", c === "FR" ? 4 : 3); m.setAttribute("height", c === "FR" ? 18 : 10); m.setAttribute("fill", c === "FR" ? "var(--fr)" : "var(--peer)"); svg.append(m); });
+    t.append(svg);
+    const go = () => { state.domain = state.domain === d.id ? "all" : d.id; domTabs.querySelectorAll(".tab").forEach(x => x.setAttribute("aria-pressed", x.dataset.id === state.domain)); render(); document.getElementById("itable").scrollIntoView({ behavior: "smooth", block: "start" }); };
+    t.onclick = go; t.onkeydown = e => { if (e.key === "Enter") go(); };
+    t.onpointermove = e => showTip(e, tt => { tt.append(el("div", "t", d.name)); order.slice(0, 11).forEach(c => { const r = el("div", "r"); const n = el("span"); n.append(flag(c, 14), document.createTextNode(CN[c])); r.append(n, el("b", null, Math.round(sc[c]))); if (c === "FR") r.style.color = "var(--fr)"; tt.append(r); }); });
+    t.onpointerleave = hideTip;
+    host.append(t);
+  });
+}
+function renderTable() {
+  const tb = document.getElementById("itable"); tb.replaceChildren();
+  const head = el("tr"); ["", "Indicateur", "France", "Rang", "Face à la médiane", "Sur 10 ans", "Tous les pays"].forEach((h, k) => { const th = el("th", k >= 5 ? "hide-m" : (k === 2 || k === 3 ? "num" : ""), h); head.append(th); });
+  const thead = document.createElement("thead"); thead.append(head); tb.append(thead);
+  const body = document.createElement("tbody");
+  D.domains.filter(d => state.domain === "all" || d.id === state.domain).forEach(d => {
+    const g = el("tr", "dgroup"); const td = el("td"); td.colSpan = 7; td.textContent = d.name; td.style.color = dcol(d.id); g.append(td); body.append(g);
+    D.indicators.filter(i => i.domain === d.id).forEach(i => {
+      const r = ranking(i), fr = r.vals.FR, tr = el("tr", "row"); tr.dataset.id = i.id;
+      const st = el("td", "dstripe"); st.style.background = dcol(d.id); tr.append(st);
+      const lab = el("td", "lab", i.label); lab.append(el("small", null, `${i.unit} · ${i.better > 0 ? "plus haut = mieux" : i.better < 0 ? "plus bas = mieux" : "repère de contexte"}`)); tr.append(lab);
+      const v = el("td", "num frv", fr ? fmt(fr[1]) : "—"); if (fr && fr[0] !== (state.year === "latest" ? i.latestYear : +state.year)) v.append(el("small", null, ` (${fr[0]})`)); tr.append(v);
+      tr.append(el("td", "num", r.rank.FR ? `${r.rank.FR}ᵉ / ${r.n}` : "—"));
+      const cmp = el("td"); if (fr && r.median != null) {
+        if (!i.better) cmp.append(el("span", "chip ctx", fr[1] >= r.median ? "au-dessus" : "en dessous"));
+        else { const better = (fr[1] - r.median) * i.better >= 0; cmp.append(el("span", "chip " + (better ? "good" : "bad"), better ? "mieux" : "moins bien")); }
+      } tr.append(cmp);
+      const trd = trend(i), tdT = el("td", "hide-m");
+      if (trd) { const imp = i.better ? trd.delta * i.better > 0 : null; const s = el("span", "chip " + (imp == null ? "ctx" : imp ? "good" : "bad"), `${trd.delta > 0 ? "↗" : trd.delta < 0 ? "↘" : "→"} ${trd.delta > 0 ? "+" : ""}${fmt(+trd.delta.toFixed(2))} depuis ${trd.from[0]}`); tdT.append(s); }
+      tr.append(tdT);
+      const tdS = el("td", "hide-m"); tdS.append(strip(i, r)); tr.append(tdS);
+      tr.onclick = () => { state.ind = i.id; indSel.value = i.id; renderDetail(); renderMap(); markRow(); document.getElementById("detail-sec").scrollIntoView({ behavior: "smooth", block: "start" }); };
+      body.append(tr);
+    });
+  });
+  tb.append(body); markRow();
+}
+function strip(i, r) {
+  const W = 180, H = 20, ns = "http://www.w3.org/2000/svg", s = document.createElementNS(ns, "svg"); s.setAttribute("width", W); s.setAttribute("height", H);
+  const vals = Object.entries(r.vals); if (!vals.length) return s;
+  const x = d3.scaleLinear().domain(d3.extent(vals, d => d[1][1])).range(i.better < 0 ? [W - 6, 6] : [6, W - 6]);
+  const base = document.createElementNS(ns, "rect"); base.setAttribute("x", 0); base.setAttribute("y", H / 2 - .5); base.setAttribute("width", W); base.setAttribute("height", 1); base.setAttribute("fill", "var(--rule-2)"); s.append(base);
+  vals.sort((a, b) => (a[0] === "FR") - (b[0] === "FR")).forEach(([c, v]) => {
+    const m = document.createElementNS(ns, c === "EU" ? "rect" : "circle");
+    if (c === "EU") { m.setAttribute("x", x(v[1]) - 1); m.setAttribute("y", 2); m.setAttribute("width", 2); m.setAttribute("height", H - 4); m.setAttribute("fill", "var(--eu)"); }
+    else { m.setAttribute("cx", x(v[1])); m.setAttribute("cy", H / 2); m.setAttribute("r", c === "FR" ? 6 : 4); m.setAttribute("fill", c === "FR" ? "var(--fr)" : "var(--peer)"); m.setAttribute("stroke", "var(--paper)"); m.setAttribute("stroke-width", 1.5); }
+    m.addEventListener("pointermove", e => { e.stopPropagation(); showTip(e, tt => { tt.append(el("div", "t", CN[c])); tt.append(el("div", "big", fmt(v[1]))); tt.append(el("div", null, `${i.unit} · ${v[0]}`)); }); });
+    m.addEventListener("pointerleave", hideTip); s.append(m);
+  });
+  return s;
+}
+function markRow() { document.querySelectorAll("#itable tr.row").forEach(r => r.classList.toggle("sel", r.dataset.id === state.ind)); }
+
+/* ---------- 02 Détail ---------- */
+function renderDetail() {
+  const i = IND[state.ind], r = ranking(i);
+  document.getElementById("dTitle").textContent = i.label;
+  document.getElementById("dMeta").textContent = `${i.unit} · ${i.better > 0 ? "plus haut = mieux" : i.better < 0 ? "plus bas = mieux" : "repère de contexte, hors score"} · ${DOM[i.domain]} · source : ${i.source}`;
+  document.getElementById("dNote").textContent = (i.note || "") + (i.missing?.length ? ` Pas de donnée récente pour : ${i.missing.map(c => CN[c]).join(", ")}.` : "");
+  // Barres classées
+  const host = document.getElementById("bars"); host.replaceChildren();
+  const rows = [...r.ranked, ...(r.vals.EU ? ["EU"] : [])].sort((a, b) => (r.vals[b][1] - r.vals[a][1]) * (i.better || 1));
+  const W = host.clientWidth || 420, rh = 26, H = rows.length * rh + 10, L = 112, R = 70;
+  const svg = d3.select(host).append("svg").attr("width", W).attr("height", H);
+  const ext = d3.extent(rows, c => r.vals[c][1]), lo = Math.min(0, ext[0]), hi = Math.max(0, ext[1]);
+  const x = d3.scaleLinear().domain([lo, hi]).nice().range([L, W - R]);
+  const g = svg.selectAll("g").data(rows).join("g").attr("transform", (c, k) => `translate(0,${k * rh + 6})`);
+  g.append(c => { const f = flag(c, 18); f.setAttribute("x", 0); f.setAttribute("y", 3); return f; });
+  g.append("text").attr("x", 26).attr("y", 14).style("font-size", "12.5px").style("font-weight", c => c === "FR" ? 800 : 500).style("fill", c => c === "FR" ? "var(--fr)" : "var(--ink-2)").text(c => CN[c]);
+  g.append("rect").attr("x", c => x(Math.min(0, r.vals[c][1]))).attr("y", 3).attr("height", rh - 10)
+    .attr("width", 0).attr("fill", c => c === "FR" ? "var(--fr)" : c === "EU" ? "var(--eu)" : "var(--peer)").attr("opacity", c => c === "EU" ? .55 : 1)
+    .transition().duration(500).attr("width", c => Math.max(1.5, Math.abs(x(r.vals[c][1]) - x(0))));
+  g.append("text").attr("x", c => Math.max(x(0), x(r.vals[c][1])) + 6).attr("y", 15).style("font-size", "12px").style("font-weight", c => c === "FR" ? 800 : 500)
+    .text(c => fmt(r.vals[c][1]) + (r.vals[c][0] !== (state.year === "latest" ? i.latestYear : +state.year) ? ` (${r.vals[c][0]})` : ""));
+  if (lo < 0) svg.append("line").attr("x1", x(0)).attr("x2", x(0)).attr("y1", 0).attr("y2", H).attr("stroke", "var(--ink)");
+  if (r.median != null) svg.append("line").attr("x1", x(r.median)).attr("x2", x(r.median)).attr("y1", 0).attr("y2", H).attr("stroke", "var(--ink)").attr("stroke-dasharray", "2 3").attr("opacity", .6);
+  g.on("pointermove", (e, c) => showTip(e, tt => { tt.append(el("div", "t", CN[c])); tt.append(el("div", "big", fmt(r.vals[c][1]))); tt.append(el("div", null, `${i.unit} · ${r.vals[c][0]}${r.rank[c] ? ` · ${r.rank[c]}ᵉ / ${r.n}` : ""}`)); })).on("pointerleave", hideTip);
+  // Courbes
+  const lh = document.getElementById("lines"); lh.replaceChildren();
+  const LW = lh.clientWidth || 520, LH = 300, M = { l: 50, r: 14, t: 14, b: 26 };
+  const cs = [...state.peers, "EU"].filter(c => i.series[c]);
+  const all = cs.flatMap(c => i.series[c]);
+  const lx = d3.scaleLinear().domain(d3.extent(all, p => p[0])).range([M.l, LW - M.r]);
+  const ly = d3.scaleLinear().domain(d3.extent(all, p => p[1])).nice().range([LH - M.b, M.t]);
+  const ls = d3.select(lh).append("svg").attr("width", LW).attr("height", LH);
+  ls.append("g").attr("class", "axis").attr("transform", `translate(${M.l},0)`).call(d3.axisLeft(ly).ticks(5).tickSize(-(LW - M.l - M.r)).tickFormat(v => fmt(v)));
+  ls.append("g").attr("class", "axis").attr("transform", `translate(0,${LH - M.b})`).call(d3.axisBottom(lx).ticks(Math.min(8, LW / 70)).tickFormat(d3.format("d")).tickSize(0).tickPadding(8));
+  const line = d3.line().x(p => lx(p[0])).y(p => ly(p[1]));
+  const order = cs.sort((a, b) => (a === "FR") - (b === "FR") || (a === "EU") - (b === "EU"));
+  const paths = ls.append("g").selectAll("path").data(order).join("path").attr("fill", "none")
+    .attr("stroke", c => c === "FR" ? "var(--fr)" : c === "EU" ? "var(--eu)" : "var(--peer-2)")
+    .attr("stroke-width", c => c === "FR" ? 3.2 : c === "EU" ? 1.8 : 1.6).attr("stroke-dasharray", c => c === "EU" ? "5 3" : null)
+    .attr("d", c => line(i.series[c]));
+  const lastLbl = ls.append("g");
+  order.filter(c => c === "FR" || c === "EU").forEach(c => { const p = i.series[c].at(-1); lastLbl.append("text").attr("x", lx(p[0]) - 4).attr("y", ly(p[1]) - 7).attr("text-anchor", "end").style("font-size", "11.5px").style("font-weight", 800).style("fill", c === "FR" ? "var(--fr)" : "var(--eu)").text(c === "FR" ? "France" : "UE"); });
+  const hl = ls.append("text").style("font-size", "11.5px").style("font-weight", 700);
+  const cross = ls.append("line").attr("y1", M.t).attr("y2", LH - M.b).attr("stroke", "var(--ink)").attr("opacity", 0);
+  ls.append("rect").attr("x", M.l).attr("y", M.t).attr("width", LW - M.l - M.r).attr("height", LH - M.t - M.b).attr("fill", "transparent")
+    .on("pointermove", e => {
+      const [mx, my] = d3.pointer(e), yr = Math.round(lx.invert(mx));
+      cross.attr("x1", lx(yr)).attr("x2", lx(yr)).attr("opacity", .35);
+      // pays le plus proche du pointeur : surligné
+      let near = null, nd = 1e9; order.forEach(c => { const p = i.series[c].find(q => q[0] === yr); if (p) { const dd = Math.abs(ly(p[1]) - my); if (dd < nd) { nd = dd; near = c; } } });
+      paths.attr("stroke", c => c === "FR" ? "var(--fr)" : c === "EU" ? "var(--eu)" : c === near ? "var(--ink)" : "var(--peer-2)").attr("stroke-width", c => c === "FR" ? 3.2 : c === near ? 2.4 : c === "EU" ? 1.8 : 1.6);
+      showTip(e, tt => {
+        tt.append(el("div", "t", String(yr)));
+        order.map(c => [c, i.series[c].find(q => q[0] === yr)]).filter(d => d[1]).sort((a, b) => (b[1][1] - a[1][1]) * (i.better || 1))
+          .forEach(([c, p]) => { const r2 = el("div", "r"); const n = el("span"); n.append(flag(c, 14), document.createTextNode(CN[c])); r2.append(n, el("b", null, fmt(p[1]))); if (c === "FR") r2.style.color = "var(--fr)"; if (c === near) r2.style.textDecoration = "underline"; tt.append(r2); });
+      });
+    })
+    .on("pointerleave", () => { cross.attr("opacity", 0); hideTip(); paths.attr("stroke", c => c === "FR" ? "var(--fr)" : c === "EU" ? "var(--eu)" : "var(--peer-2)").attr("stroke-width", c => c === "FR" ? 3.2 : c === "EU" ? 1.8 : 1.6); });
+}
+
+/* ---------- 03 Carte + heatmap ---------- */
+function renderMap() {
+  const i = IND[state.ind], r = ranking(i), host = document.getElementById("map"); host.replaceChildren();
+  document.getElementById("mTitle").textContent = `${i.label} (${i.unit})`;
+  const W = host.clientWidth || 520, H = Math.round(W * .86);
+  const proj = d3.geoConicConformal().parallels([40, 60]).rotate([-10, 0]).center([0, 52]).fitExtent([[6, 6], [W - 6, H - 6]], { type: "FeatureCollection", features: GEO.features.filter(f => f.id) });
+  const path = d3.geoPath(proj);
+  const cs = getComputedStyle(document.documentElement), ramp = [0, 1, 2, 3, 4].map(k => cs.getPropertyValue("--map-" + k).trim());
+  const vals = r.ranked.map(c => r.vals[c][1]);
+  const t = v => i.better ? (r.n > 1 ? (r.n - r.rank[v]) / (r.n - 1) : .5) : (vals.length ? (r.vals[v][1] - d3.min(vals)) / ((d3.max(vals) - d3.min(vals)) || 1) : .5);
+  const col = d3.interpolateRgbBasis(ramp.slice(1));
+  // Étiquette au centre du plus grand polygone (évite la Corse, les îles…)
+  const mainCentroid = f => { const polys = f.geometry.coordinates.map(c => ({ type: "Polygon", coordinates: c }));
+    return path.centroid(polys.reduce((a, b) => path.area(b) > path.area(a) ? b : a)); };
+  const svg = d3.select(host).append("svg").attr("width", W).attr("height", H);
+  svg.append("g").selectAll("path").data(GEO.features).join("path").attr("d", path)
+    .attr("fill", f => f.id && r.vals[f.id] && state.peers.has(f.id) ? col(t(f.id)) : "var(--map-0)")
+    .attr("stroke", f => f.id === "FR" ? "var(--fr)" : "var(--paper)").attr("stroke-width", f => f.id === "FR" ? 2.4 : .7)
+    .style("cursor", f => f.id ? "default" : null)
+    .on("pointermove", (e, f) => { if (!f.id || f.id === "AT") return; showTip(e, tt => { tt.append(el("div", "t", CN[f.id])); const v = r.vals[f.id]; tt.append(el("div", "big", v ? fmt(v[1]) : "pas de donnée")); if (v) tt.append(el("div", null, `${v[0]}${r.rank[f.id] ? ` · ${r.rank[f.id]}ᵉ / ${r.n}` : ""}`)); }); })
+    .on("pointerleave", hideTip);
+  svg.selectAll("text.lbl").data(GEO.features.filter(f => f.id && r.vals[f.id] && state.peers.has(f.id) && f.id !== "LU")).join("text").attr("class", "lbl")
+    .attr("x", f => mainCentroid(f)[0]).attr("y", f => mainCentroid(f)[1]).attr("text-anchor", "middle").attr("dy", ".35em")
+    .style("font-size", W < 420 ? "9.5px" : "11px").style("font-weight", 800).style("fill", f => t(f.id) > .55 ? "#fff" : "#0d0f12").style("pointer-events", "none")
+    .text(f => fmt(r.vals[f.id][1]));
+  const sc = document.getElementById("mScale"); sc.replaceChildren();
+  const gr = el("div", "grad"); gr.style.background = `linear-gradient(90deg, ${ramp.slice(1).join(",")})`;
+  sc.append(el("span", null, i.better ? "dernier" : "plus bas"), gr, el("span", null, i.better ? "premier du panel" : "plus haut"));
+}
+function renderHeat(ds) {
+  const host = document.getElementById("heat"); host.replaceChildren();
+  const cs = [...state.peers], fr = cs.indexOf("FR"); cs.splice(fr, 1); cs.unshift("FR");
+  const avg = c => d3.mean(D.domains.map(d => ds[d.id][c]).filter(v => v != null));
+  cs.sort((a, b) => (a !== "FR") - (b !== "FR") || (avg(b) || 0) - (avg(a) || 0));
+  const W = host.clientWidth || 460, L = 108, cw = (W - L) / D.domains.length, ch = 30, top = 30, H = top + cs.length * ch;
+  const svg = d3.select(host).append("svg").attr("width", W).attr("height", H);
+  D.domains.forEach((d, k) => { svg.append("rect").attr("x", L + k * cw + 1).attr("y", 0).attr("width", cw - 2).attr("height", 5).attr("fill", dcol(d.id));
+    svg.append("text").attr("x", L + k * cw + cw / 2).attr("y", 22).attr("text-anchor", "middle").style("font-size", W < 420 ? "9px" : "11px").style("font-weight", 700).text(W < 520 ? d.name.slice(0, 4) + "." : d.name); });
+  const col = d3.scaleSequential(d3.interpolateRgbBasis([getComputedStyle(document.documentElement).getPropertyValue("--map-1").trim(), getComputedStyle(document.documentElement).getPropertyValue("--map-4").trim()])).domain([0, 100]);
+  cs.forEach((c, j) => {
+    const y = top + j * ch, g = svg.append("g");
+    g.append(() => { const f = flag(c, 18); f.setAttribute("x", 0); f.setAttribute("y", y + 8); return f; });
+    g.append("text").attr("x", 24).attr("y", y + 19).style("font-size", "12px").style("font-weight", c === "FR" ? 800 : 500).style("fill", c === "FR" ? "var(--fr)" : "var(--ink-2)").text(W < 420 ? c : CN[c]);
+    D.domains.forEach((d, k) => {
+      const v = ds[d.id][c];
+      g.append("rect").attr("x", L + k * cw + 1).attr("y", y + 2).attr("width", cw - 2).attr("height", ch - 4).attr("fill", v == null ? "var(--soft)" : col(v))
+        .attr("stroke", c === "FR" ? "var(--fr)" : "none").attr("stroke-width", 2)
+        .on("pointermove", e => showTip(e, tt => { tt.append(el("div", "t", `${CN[c]} · ${d.name}`)); tt.append(el("div", "big", v == null ? "non classé" : Math.round(v) + " /100")); }))
+        .on("pointerleave", hideTip);
+      if (v != null) g.append("text").attr("x", L + k * cw + cw / 2).attr("y", y + 19).attr("text-anchor", "middle").style("font-size", "11px").style("font-weight", 700)
+        .style("fill", v > 55 ? "#fff" : "#0d0f12").style("pointer-events", "none").text(Math.round(v));
+    });
+  });
+}
+
+/* ---------- 04 Politiques ---------- */
+function renderPolicies() {
+  const host = document.getElementById("pgrid"); host.replaceChildren();
+  D.policies.filter(p => state.domain === "all" || p.domain === state.domain).forEach(p => {
+    const c = el("article", "pcard");
+    const h = el("div", "ph"); const bar = el("div", "bar"); bar.style.background = dcol(p.domain); h.append(bar);
+    const who = el("div", "who"); p.country.forEach(k => { who.append(flag(k, 18), document.createTextNode(CN[k] + " ")); });
+    who.append(document.createTextNode(`· ${p.year}`)); if (p.outside) who.append(el("span", "outside", "hors panel"));
+    h.append(who, el("h3", "display", p.title)); c.append(h);
+    const b = el("div", "pb");
+    [["La mesure", p.law], ["Ce que montrent les évaluations", p.effects], ["Limites et contre-effets", p.limits], ["Et en France ?", p.france]].forEach(([t, txt]) => { const s = el("div"); s.append(el("h4", "cond", t), el("p", null, txt)); b.append(s); });
+    const ind = IND[p.indicator];
+    if (ind) { const r = ranking(ind), fr = r.vals.FR; const go = el("button", "goto", `→ ${ind.label} : France ${fr ? fmt(fr[1]) : "—"} ${ind.unit}${r.rank.FR ? `, ${r.rank.FR}ᵉ / ${r.n}` : ""}`);
+      go.onclick = () => { state.ind = ind.id; indSel.value = ind.id; renderDetail(); renderMap(); markRow(); document.getElementById("detail-sec").scrollIntoView({ behavior: "smooth" }); }; b.append(go); }
+    const src = el("div", "src"); src.append(el("h4", "cond", "Sources (consultées le 16 octobre 2026)"));
+    const ul = el("ul"); ul.style.margin = "4px 0 0"; ul.style.paddingLeft = "16px";
+    p.sources.forEach(s => { const li = el("li"); const a = el("a", null, s.label); a.href = s.url; a.target = "_blank"; a.rel = "noopener"; li.append(a); ul.append(li); });
+    src.append(ul); b.append(src); c.append(b); host.append(c);
+  });
+  const sh = document.getElementById("shTable"); sh.replaceChildren();
+  sh.style.display = state.domain === "all" || state.domain === "logement" ? "" : "none";
+  sh.append(el("h4", "display", "Repère : le logement social dans le parc de logements"));
+  PEERS.forEach(k => { const row = el("div", "sh-row"); const n = el("span"); n.style.display = "flex"; n.style.gap = "6px"; n.style.alignItems = "center"; n.style.fontWeight = k === "FR" ? 800 : 500; if (k === "FR") n.style.color = "var(--fr)";
+    n.append(flag(k, 16), document.createTextNode(CN[k])); row.append(n, el("span", null, D.socialHousing.bands[k] || "—")); sh.append(row); });
+  const note = el("p", null, `${D.socialHousing.note} Source : `); note.style.cssText = "margin:8px 0 0;font-size:12.5px;color:var(--muted)";
+  const a = el("a", null, D.socialHousing.source); a.href = D.socialHousing.url; a.target = "_blank"; a.rel = "noopener"; note.append(a); sh.append(note);
+}
+
+/* ---------- Thème et rendu ---------- */
+document.getElementById("theme").onclick = () => { const r = document.documentElement; const dark = r.dataset.theme ? r.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches; r.dataset.theme = dark ? "light" : "dark"; try { localStorage.setItem("fv-theme", r.dataset.theme); } catch (e) {} render(); };
+try { const t = localStorage.getItem("fv-theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+function render() { const ds = domainScores(); renderTiles(ds); renderTable(); indSel.value = state.ind; renderDetail(); renderMap(); renderHeat(ds); renderPolicies(); }
+let rz; addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(render, 150); });
+render();
+</script>
+</body>
+</html>
