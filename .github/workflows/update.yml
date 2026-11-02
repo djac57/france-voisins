@@ -28,9 +28,11 @@ jobs:
 
       # Une source indisponible fait échouer l'étape : le site reste alors sur les données précédentes
       - name: Télécharger les indicateurs (Eurostat, Banque mondiale, FMI, OWID)
+        continue-on-error: true   # source externe en panne : on garde les dernières données, le site se déploie quand même
         run: python scripts/fetch.py data/raw
 
       - name: Construire data.js
+        continue-on-error: true
         run: python scripts/build.py data/raw
 
       - name: Committer les nouvelles données
