@@ -253,7 +253,7 @@ footer p { max-width: 980px; }
     <p><b>Méthode.</b> Une source unique par indicateur pour tous les pays, interrogée par API (codes indiqués sous chaque indicateur). Pour l'année choisie, chaque pays prend sa valeur la plus récente datant de cinq ans au plus. Le sens « mieux » de chaque indicateur est affiché. Les repères de contexte (dépense d'éducation, dépense de santé, propriétaires, prix des logements…) sont classés mais n'entrent pas dans les scores, car « plus » n'y est pas « mieux ». Le sens retenu pour la fiscalité (une pression plus légère est mieux classée) est un choix discutable, signalé comme tel. Le Royaume-Uni n'est plus couvert par Eurostat après 2019-2020, et la Suisse ne l'est que partiellement : des trous sont donc possibles, et indiqués.</p>
     <p><b>Sources.</b> Eurostat (API de diffusion JSON-stat) ; Banque mondiale (API v2 ; OIT, OMS) ; FMI (DataMapper, Perspectives de l'économie mondiale) ; OCDE, Résultats du PISA 2022 ; Ember via Our World in Data (CC BY 4.0) ; OCDE, Affordable Housing Database. Les sources des fiches de politiques publiques sont citées sur chaque fiche (consultées le 16 octobre 2026). Fond de carte : Natural Earth via world-atlas (domaine public). Drapeaux redessinés en SVG simplifié.</p>
   </div>
-<p class="rgpd-note" style="font:400 12px/1.5 system-ui,-apple-system,sans-serif;opacity:.55;text-align:center;max-width:72ch;margin:1.25rem auto 0;padding:0 1rem">Analytics anonymes sans cookies (GoatCounter). Polices et bibliothèque d3 auto-hébergées. Hébergé sur GitHub Pages — aucune donnée personnelle collectée, aucun cookie.</p>
+<p class="rgpd-note" style="font:400 12px/1.5 system-ui,-apple-system,sans-serif;opacity:.55;text-align:center;max-width:72ch;margin:1.25rem auto 0;padding:0 1rem" data-fr="Analytics anonymes sans cookies (GoatCounter). Polices et bibliothèque d3 auto-hébergées. Hébergé sur GitHub Pages — aucune donnée personnelle collectée, aucun cookie." data-en="Anonymous analytics, no cookies (GoatCounter). Self-hosted fonts and d3 library. Hosted on GitHub Pages — no personal data collected, no cookies.">Analytics anonymes sans cookies (GoatCounter). Polices et bibliothèque d3 auto-hébergées. Hébergé sur GitHub Pages — aucune donnée personnelle collectée, aucun cookie.</p>
 </footer>
 <div class="tip" id="tip" role="tooltip"></div>
 
@@ -573,5 +573,6 @@ function render() { const ds = domainScores(); renderTiles(ds); renderTable(); i
 let rz; addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(render, 150); });
 render();
 </script>
+<script id="rgpd-lang">document.querySelectorAll(".rgpd-note").forEach(function(n){try{var en=(navigator.language||navigator.userLanguage||"").slice(0,2).toLowerCase()==="en";var v=n.getAttribute(en?"data-en":"data-fr");if(v)n.textContent=v;}catch(e){}});</script>
 </body>
 </html>
